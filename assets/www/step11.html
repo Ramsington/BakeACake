@@ -1,0 +1,86 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>Step 8: Mix Up</title>
+<link rel="stylesheet" type="text/css" href="styles.css"></link>
+<script src="http://code.jquery.com/jquery-1.8.2.min.js" type="application/javascript"></script>
+<script>
+window.addEventListener('load', function () {
+	
+	var oven = new Image();
+  	oven.src = 'ovenopen.jpg';
+  	var i = 0;
+  	
+  	function showAlert()
+  	{
+  		i++;
+  		if(i == 1)
+  		{
+  			window.alert('Done, now go to the next page to celebrate!')
+  		}
+  		
+  	}
+  
+    var img = new Image;
+    var ctx = document.getElementById('myCanvas').getContext('2d');
+  
+  	img.src = 'caketin.png';
+  	img.addEventListener('load', function () {
+
+	      var interval = setInterval(function() {
+	      var x = 95, y = 290, width = 150, height = 110;
+	      
+	      return function () {
+	        ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
+			ctx.drawImage(oven, 45, 0);
+	        ctx.drawImage(img, x, y, width, height);
+			if(y < 80)
+			{
+				y = y;
+				showAlert();
+			}
+			else
+			{
+				y -= 1;
+				width -= 0.4;
+				height -= 0.3;
+				x += 0.2;
+			}
+	      };
+    }(), 1000/40);
+  }, false);
+}, false);
+    </script>
+</head>
+
+<body>
+    <div class="selector" >
+      <select onchange="if (this.value) window.location.href = this.value;">
+      <option value="ingredients.html">Ingredients/Recipe</option>
+        <option value="index.html">How to Bake a Cake</option>
+        <option value="step1.html">Step 1: Pre-heat</option>
+        <option value="step2.html">Step 2: Butter Tin</option>
+        <option value="step3.html">Step 3: Break Up</option>
+        <option value="step4.html">Step 4: Melt Down</option>
+        <option value="step5.html">Step 5: Get Sieving</option>
+        <option value="step6.html">Step 6: Cracking Eggs</option>
+        <option value="step7.html">Step 7: Stir the Mix</option>
+        <option value="step8.html">Step 8: Combine Mixes</option>
+        <option value="step9.html">Step 9: Stir Well</option>
+        <option value="step10.html">Step 10: Pour into Tin</option>
+        <option value="step11.html" selected="selected">Step 11: Cook!</option>
+        <option value="camera.html">Take a Picture</option>
+      </select>
+    </div>
+    <div class="content" align="center">
+    <h1>Put the cake Tin in the Oven and leave to bake for around 90 minutes</h1>
+    <canvas id="myCanvas" width="320px" height="400px"></canvas>
+    </div>
+</div>
+<div class="bottombar">
+  <div class="previous"><a href="step10.html">&laquo;</a></div>
+  <div class="next" id="next"><a href="camera.html">&raquo;</a></div>
+</div>
+</body>
+</html>

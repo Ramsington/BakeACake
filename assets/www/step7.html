@@ -1,0 +1,75 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>Step 3: Break Up</title>
+<link rel="stylesheet" type="text/css" href="styles.css"></link>
+<script src="http://code.jquery.com/jquery-1.8.2.min.js" type="application/javascript"></script>
+<script type="text/javascript" charset="utf-8">
+$(document).ready(function() {
+var i = 0;
+
+var k = 0;
+  	
+  	function showAlert()
+  	{
+  		k++;
+  		if(i == k)
+  		{
+  			window.alert('Done!')
+  		}
+  		
+  	}
+$('.mixer').on('touchmove', function(e){
+	e.preventDefault(); 
+	setInterval(function(){
+		if(i < 20)
+			{
+				i++;
+				$('#mix').attr('src', 'bowl'+i+'.jpg');
+			}
+		else
+			{
+				var nextlink = document.getElementById('next');
+	   			nextlink.className = "next";
+	   			nextlink.innerHTML = '<a href="step8.html">&raquo;</a>';
+	   			showAlert();
+			}
+	}, 1000);
+});
+});
+</script>
+</head>
+
+<body>
+    <div class="selector" >
+      <select onchange="if (this.value) window.location.href = this.value;">
+      <option value="ingredients.html">Ingredients/Recipe</option>
+        <option value="index.html">How to Bake a Cake</option>
+        <option value="step1.html">Step 1: Pre-heat</option>
+        <option value="step2.html">Step 2: Butter Tin</option>
+        <option value="step3.html">Step 3: Break Up</option>
+        <option value="step4.html">Step 4: Melt Down</option>
+        <option value="step5.html">Step 5: Get Sieving</option>
+        <option value="step6.html">Step 6: Cracking Eggs</option>
+        <option value="step7.html" selected="selected">Step 7: Stir the Mix</option>
+        <option value="step8.html">Step 8: Combine Mixes</option>
+        <option value="step9.html">Step 9: Stir Well</option>
+        <option value="step10.html">Step 10: Pour into Tin</option>
+        <option value="step11.html">Step 11: Cook!</option>
+        
+      </select>
+    </div>
+    <div class="content" align="center">
+    <h1>Stir the Mix</h1>
+    <div class="mixer">
+    <img class="mix" src="bowl.jpg" id="mix"/>
+    </div>
+    </div>
+</div>
+<div class="bottombar">
+  <div class="previous"><a href="step5.html">&laquo;</a></div>
+  <div class="next off" id="next">&raquo;</div>
+</div>
+</body>
+</html>

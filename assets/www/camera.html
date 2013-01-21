@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Capture Photo</title>
+	<link rel="stylesheet" type="text/css" href="styles.css"></link>
+    <script type="text/javascript" charset="utf-8" src="cordova-2.1.0.js"></script>
+    <script type="text/javascript" charset="utf-8">
+    //http:/docs.phonegap.com/en/1.0.0/phonegap_media_capture_capture.md.html#capture.captureImage
+
+    var pictureSource;   // picture source
+    var destinationType; // sets the format of returned value 
+
+    // Wait for PhoneGap to connect with the device
+    //
+    document.addEventListener("deviceready",onDeviceReady,false);
+
+    // PhoneGap is ready to be used!
+    //
+    function onDeviceReady() {
+        pictureSource=navigator.camera.PictureSourceType;
+        destinationType=navigator.camera.DestinationType;
+    }
+
+
+    // Called when a photo is successfully retrieved
+    //
+    function onPhotoURISuccess(imageURI) {
+      // Uncomment to view the image file URI 
+      // console.log(imageURI);
+
+      // Get image handle
+      //
+      var largeImage = document.getElementById('smallImage');
+
+      // Unhide image elements
+      //
+      largeImage.style.display = 'block';
+      document.getElementById('message').style.display = 'block';
+
+      // Show the captured photo
+      // The inline CSS rules are used to resize the image
+      //
+      largeImage.src = imageURI;
+    }
+
+    // A button will call this function
+    //
+    function capturePhoto() {
+      // Take picture using device camera and retrieve image as base64-encoded string
+      navigator.camera.getPicture(onPhotoURISuccess, onFail, { quality: 50 });
+    }
+
+    // Called if something bad happens.
+    // 
+    function onFail(message) {
+      alert('Failed because: ' + message);
+    }
+
+    </script>
+  </head>
+  <body>
+   <div class="selector" >
+      <select onchange="if (this.value) window.location.href = this.value;">
+      <option value="ingredients.html">Ingredients/Recipe</option>
+        <option value="index.html">How to Bake a Cake</option>
+        <option value="step1.html">Step 1: Pre-heat</option>
+        <option value="step2.html">Step 2: Butter Tin</option>
+        <option value="step3.html">Step 3: Break Up</option>
+        <option value="step4.html">Step 4: Melt Down</option>
+        <option value="step5.html">Step 5: Get Sieving</option>
+        <option value="step6.html">Step 6: Cracking Eggs</option>
+        <option value="step7.html">Step 7: Stir the Mix</option>
+        <option value="step8.html">Step 8: Combine Mixes</option>
+        <option value="step9.html">Step 9: Stir Well</option>
+        <option value="step10.html">Step 10: Pour into Tin</option>
+        <option value="step11.html">Step 11: Cook!</option>
+        <option value="camera.html" selected="selected">Take a Picture</option>
+      </select>
+    </div>
+    <div class="content" align="center">
+    <h1>Now that you have baked you cake why not take a picture to remember?!</h1>
+    <button onclick="capturePhoto();">Capture Photo</button> <br>
+    <img style="display:none;width:90%;" id="smallImage" src="" />
+    <h1 id="message" style="display:none;">Congratulations! It looks Tasty!</h1>
+    </div>
+</div>
+<div class="bottombar">
+  <div class="previous"><a href="step11.html">&laquo;</a></div>
+  <div class="next off" id="next">&raquo;</div>
+</div>
+  </body>
+</html>

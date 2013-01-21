@@ -1,0 +1,99 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>Step 1: Pre-heat</title>
+<link rel="stylesheet" type="text/css" href="styles.css"></link>
+<script type="text/javascript" charset="utf-8" src="cordova-2.1.0.js"></script>
+<script type="text/javascript" charset="utf-8">
+
+    // The watch id references the current `watchAcceleration`
+    var watchID = null;
+
+    // Wait for PhoneGap to load
+    //
+    document.addEventListener("deviceready", onDeviceReady, false);
+
+    // PhoneGap is ready
+    //
+    function onDeviceReady() {
+        startWatch();
+    }
+
+    // Start watching the acceleration
+    //
+    function startWatch() {
+        watchID = navigator.accelerometer.watchAcceleration(onSuccess, onError, {frequency: 500});
+    }
+
+    // Stop watching the acceleration
+    //
+    function stopWatch() {
+        if (watchID) {
+            navigator.accelerometer.clearWatch(watchID);
+            watchID = null;
+        }
+    }
+
+    // onSuccess: Get a snapshot of the current acceleration
+    //
+    function onSuccess(acceleration) {
+    	var img = document.getElementById('knob');
+    				var y = acceleration.y;
+    				var radians = Math.atan2(1, y);
+    				var degree = Math.round(radians * (180 / Math.PI) * -1) + 90;
+    				degree = -degree + 90
+    				img.setAttribute('style', '-webkit-transform: rotate('+degree+'deg); width:60%;');
+    				
+       if((degree > 136) && (degree < 142))
+    	   {
+    	   stopWatch();
+    	   var nextlink = document.getElementById('next');
+    	   nextlink.className = "next";
+    	   nextlink.innerHTML = '<a href="step2.html">&raquo;</a>';
+    	   window.alert('Done!');
+    	   }
+    }
+
+    // onError: Failed to get the acceleration
+    //
+    function onError() {
+        alert('onError!');
+    }
+
+    </script>
+</head>
+
+<body>
+<div class="selector">
+  <select onchange="if (this.value) window.location.href = this.value;">
+  <option value="ingredients.html">Ingredients/Recipe</option>
+    <option value="index.html">How to Bake a Cake</option>
+    <option value="step1.html" selected="selected">Step 1: Pre-heat</option>
+    <option value="step2.html">Step 2: Butter Tin</option>
+    <option value="step3.html">Step 3: Break Up</option>
+    <option value="step4.html">Step 4: Melt Down</option>
+    <option value="step5.html">Step 5: Get Sieving</option>
+    <option value="step6.html">Step 6: Cracking Eggs</option>
+    <option value="step7.html">Step 7: Stir the Mix</option>
+        <option value="step8.html">Step 8: Combine Mixes</option>
+        <option value="step9.html">Step 9: Stir Well</option>
+        <option value="step10.html">Step 10: Pour into Tin</option>
+        <option value="step11.html">Step 11: Cook!</option>
+  </select>
+</div>
+
+<!--////////START MAIN CONTENT///////-->
+<div class="content" align="center">
+  <h1>First we need to pre-heat the oven to 160&deg;C</h1>
+  <p>|</p>
+  <div id="ovenknob"> <img src="knob.png" id="knob" alt="Oven Knob" title="Oven Knob" style="width:60%;" /> </div>
+  <h1>Rotate Phone to turn Oven Knob.</h1>
+</div>
+<!--////////END MAIN CONTENT///////-->
+<div class="bottombar">
+  <div class="previous"><a href="index.html"> &laquo;</a> </div>
+  <div class="next off" id="next">&raquo;</div>
+</div>
+</body>
+</html>

@@ -1,0 +1,179 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>Step 4: Melt Down</title>
+<link rel="stylesheet" type="text/css" href="styles.css"></link>
+<script src="http://code.jquery.com/jquery-1.8.2.min.js" type="application/javascript"></script>
+<script type="text/javascript" charset="utf-8" src="cordova-2.1.0.js"></script>
+<script>
+//http://www.digitalnoiz.com/mobile-development/accessing-the-accelerometer-in-phonegap/
+window.addEventListener('load', function(){
+	// Wait for PhoneGap to load
+		document.addEventListener("deviceready", onDeviceReady, false);
+}, false);
+
+
+// PhoneGap is ready
+function onDeviceReady() {
+	var stopWatchBtn = $('#stopWatch');
+	var startWatchBtn = $('#startWatch');
+	
+	var watchID = null;
+		var watchMove = null;
+	
+    navigator.accelerometer.getCurrentAcceleration(onSuccess, onError);        
+    
+    // Start Watch Button
+    startWatchBtn.click(function(){
+    	startWatch();
+    });
+    
+    // Stop Watch Button
+    stopWatchBtn.click(function(){
+    	stopWatch();
+    });
+}
+
+// Start moving the object
+var startMove = $('#startMove');
+startMove.live("click",function(){
+	startMoving();
+	$(this).hide();
+});
+
+// Start watching the acceleration
+function startMoving(){
+
+    var options = { frequency: 500 };
+
+    watchMove = navigator.accelerometer.watchAcceleration(moveObject, onError, options);
+}
+var i = -5;
+// moveObject
+function moveObject(acceleration) {
+	var myObj = $('#obj');
+	var wall = $('#obj_wall');
+	var objPosition = myObj.position();
+	var leftBoundary = 0;
+	var topBoundary = 0;
+	var rightBoundary = wall.width() - myObj.width() - 10; // 10 represents the 10px for the margin
+	var bottomBoundary = wall.height() - myObj.height() - 10; // 10 represents the 10px for the margin
+	
+	var leftZone = leftBoundary + 110;
+	var topZone = topBoundary + 110;
+	var rightZone = rightBoundary + 110;
+	var bottomZone = bottomBoundary + 110;
+	
+	if( acceleration.x < 0 && objPosition.left <= rightBoundary ) {
+		myObj.animate({
+			left:'+=10'
+		},100);
+	} else if( acceleration.x > 0 && objPosition.left > leftBoundary ) {
+		myObj.animate({
+			left:'-=10'
+		},100);
+	}
+	if( acceleration.y < 0 && objPosition.top > topBoundary ) {
+		myObj.animate({
+			top:'-=10'
+		},100);
+	} else if(acceleration.y > 0 && objPosition.top <= bottomBoundary ) {
+		myObj.animate({
+			top:'+=10'
+		},100);
+	}
+	
+	if((objPosition.left <= rightZone) && (objPosition.left > leftZone) && (objPosition.top > topZone) && (objPosition.top <= bottomZone))
+		{
+			i++;
+			if(i < 5 && i > 0)
+				myObj.css('background-image','url(pan'+i+'.png)');
+			else if(i > 4)
+				{
+					var nextlink = document.getElementById('next');
+	    	   		nextlink.className = "next";
+	    	   		nextlink.innerHTML = '<a href="step5.html">&raquo;</a>';
+	    	   		stopMove();
+	    	   		window.alert('Done!');
+				}
+		}
+}
+
+// Start watching the acceleration
+function startWatch() {
+
+    // Update acceleration every 2 seconds
+    var options = { frequency: 500 };
+
+    watchID = navigator.accelerometer.watchAcceleration(onSuccess, onError, options);
+}
+
+// Stop watching the acceleration
+function stopWatch() {
+    if(watchID) {
+        navigator.accelerometer.clearWatch(watchID);
+        watchID = null;
+    }
+}
+
+function stopMove() {
+    if(watchMove) {
+        navigator.accelerometer.clearWatch(watchMove);
+        watchMove = null;
+    }
+}
+
+
+// onSuccess: Display the current acceleration
+function onSuccess(acceleration) {
+    
+}
+
+// onError: Failed to get the acceleration
+function onError() {
+    alert('onError!');
+}
+</script>
+</head>
+
+<body>
+    <div class="selector" >
+      <select onchange="if (this.value) window.location.href = this.value;">
+      <option value="ingredients.html">Ingredients/Recipe</option>
+        <option value="index.html">How to Bake a Cake</option>
+        <option value="step1.html">Step 1: Pre-heat</option>
+        <option value="step2.html">Step 2: Butter Tin</option>
+        <option value="step3.html">Step 3: Break Up</option>
+        <option value="step4.html" selected="selected">Step 4: Melt Down</option>
+        <option value="step5.html">Step 5: Get Sieving</option>
+        <option value="step6.html">Step 6: Cracking Eggs</option>
+        <option value="step7.html">Step 7: Stir the Mix</option>
+        <option value="step8.html">Step 8: Combine Mixes</option>
+        <option value="step9.html">Step 9: Stir Well</option>
+        <option value="step10.html">Step 10: Pour into Tin</option>
+        <option value="step11.html">Step 11: Cook!</option>
+      </select>
+    </div>
+    <div class="content" align="center">
+    <div data-role="page" id="object"> 
+		<div data-role="header" data-position="fixed">
+			<h1>Melt the Butter and Chocolate - Keep the pan over the flame</h1>
+		</div> 
+		<div data-role="content">
+			<div id="obj_wall">
+				<div id="obj"></div>
+			</div>
+			<div id="accelerometer">Tilt device to move pan.</div>
+			<div>
+				<a href="#" id="startMove" data-role="button">Start Moving</a>
+			</div>
+		</div> 
+</div>
+</div>
+<div class="bottombar">
+  <div class="previous off"><a href="step3.html">&laquo;</a></div>
+  <div class="next off" id="next">&raquo;</div>
+</div>
+</body>
+</html>

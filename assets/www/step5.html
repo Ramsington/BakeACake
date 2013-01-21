@@ -1,0 +1,98 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>Step 3: Break Up</title>
+<link rel="stylesheet" type="text/css" href="styles.css"></link>
+<script src="http://code.jquery.com/jquery-1.8.2.min.js" type="application/javascript"></script>
+<script type="text/javascript" charset="utf-8" src="cordova-2.1.0.js"></script>
+<script type="text/javascript" charset="utf-8">
+            // The watch id references the current `watchAcceleration`
+            var watchID = null;
+            var percent = 60;
+            var margin = 0;
+            //wait for PhoneGap to load
+            document.addEventListener("deviceready", loaded, false);
+            // PhoneGap is ready
+            function loaded() {
+                startWatch();
+            }
+            // Start watching the acceleration
+            function startWatch() {
+                var previousReading = {
+                    x: null,
+                    y: null,
+                    z: null
+                }
+                navigator.accelerometer.watchAcceleration(function (acceleration) {
+                  var changes = {},
+                  bound = 1.5;
+                  if (previousReading.x !== null) {
+                      changes.x = Math.abs(previousReading.x, acceleration.x);
+                      changes.y = Math.abs(previousReading.y, acceleration.y);
+                      changes.z = Math.abs(previousReading.z, acceleration.z);
+                  }
+                  if (changes.x > bound && changes.y > bound && changes.z > bound) {
+                    shaken();
+                  }
+                  previousReading = {
+                  x: acceleration.x,
+                  y: acceleration.y,
+                  z: acceleration.z
+                  }
+                  }, onError, { frequency: 1000 });
+            }
+            function shaken(){
+                //alert("Shaken");
+                $('#flour').css('width', percent + '%');
+                $('#flour').css('padding-top', margin + '%');
+                percent = percent - 10;
+                margin = margin + 5;
+                if(percent < 0)
+                	{
+                	var nextlink = document.getElementById('next');
+	    	   		nextlink.className = "next";
+	    	   		nextlink.innerHTML = '<a href="step6.html">&raquo;</a>';
+	    	   		window.alert('Done!');
+                	}
+            }
+            // Error
+            function onError() {
+                alert('onError!');
+            }
+            </script>
+</head>
+
+<body>
+    <div class="selector" >
+      <select onchange="if (this.value) window.location.href = this.value;">
+      <option value="ingredients.html">Ingredients/Recipe</option>
+        <option value="index.html">How to Bake a Cake</option>
+        <option value="step1.html">Step 1: Pre-heat</option>
+        <option value="step2.html">Step 2: Butter Tin</option>
+        <option value="step3.html">Step 3: Break Up</option>
+        <option value="step4.html">Step 4: Melt Down</option>
+        <option value="step5.html" selected="selected">Step 5: Get Sieving</option>
+        <option value="step6.html">Step 6: Cracking Eggs</option>
+        <option value="step7.html">Step 7: Stir the Mix</option>
+        <option value="step8.html">Step 8: Combine Mixes</option>
+        <option value="step9.html">Step 9: Stir Well</option>
+        <option value="step10.html">Step 10: Pour into Tin</option>
+        <option value="step11.html">Step 11: Cook!</option>
+      </select>
+    </div>
+    <div class="content" align="center">
+    <h1>Sieve self-raising flour, bicarbonate of soda, sugar and cocoa powder into a bowl - Shake Device</h1>
+    <div id="sieving">
+    <img class="sieve" src="sieve.jpg" alt="sieve" title="sieve" id="sieve"/>
+    </div>
+    <div class="flour" style="margin-top:-310px;">
+    <img id="flour" src="flour.png"/>
+    </div>
+</div>
+<div class="bottombar">
+  <div class="previous"><a href="step4.html">&laquo;</a></div>
+  <div class="next off" id="next">&raquo;</div>
+</div>
+</body>
+</html>
